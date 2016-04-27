@@ -10,13 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src='/app.js'></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
-    <script type="text/javascript">
-      $('.datepicker').pickadate({
-        selectMonths: true, // Creates a dropdown to control month
-        selectYears: 15 // Creates a dropdown of 15 years to control year
-      });
-    </script>
+    <script type="text/javascript" src="js/materialize.js"></script>
+    <script type="text/javascript" src="js/picker.js"></script>
+    <script type="text/javascript" src="js/picker.time.js"></script>
   </head>
 
   <body>
@@ -34,6 +30,51 @@
       </div>
       <div class="container">
 
+      </div>
+    </div>
+    <div class='templates hide'>
+      <div class='date-add'>
+
+        <div id="date-picker" class="col s6">
+          <h3 class='title'></h3>
+          <label for="date">Date</label>
+
+          <div class="row">
+            <form class="col s12">
+              <div class="row">
+                <div class="input-field col s12 m12">
+                  <input type="date" class="datepicker">
+                </div>
+
+                <div class="input-field col s12 m12">
+                  <input type="text" class="timepicker">
+                  <label for="text">Time</label>
+                </div>
+
+                <div class="input-field col s12 m12">
+                  <textarea id="textarea1" class="materialize-textarea"></textarea>
+                  <label for="textarea1">Textarea</label>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+
+      </div>
+      <div class='dates-list'>
+        <h3 class='title'></h3>
+        <p data-name='description'></p>
+        <a class="waves-effect waves-light btn" id="start" href="#start">Start</a>
+        <a class="waves-effect waves-light btn" id="start" href="#date-add">Add date</a>
+      </div>
+      <div class='start'>
+        <h3 class='title'></h3>
+        <p data-name='description'></p>
+        <a class="waves-effect waves-light btn" id="start" href="#dates">List dates</a>
       </div>
     </div>
     <script type='text/javascript'>

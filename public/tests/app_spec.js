@@ -10,16 +10,16 @@ describe('TimeMgr', function() {
   });
 
   it('invokes the router when loaded', function () {
-    spyOn(timemgr, 'showStart');
+    spyOn(timemgr, 'showView');
     timemgr.appOnReady();
-    expect(timemgr.showStart).toHaveBeenCalledWith(window.location.hash);
+    expect(timemgr.showView).toHaveBeenCalledWith(window.location.hash);
   });
 
   it('subscribes to the hash change event', function() {
     timemgr.appOnReady();
-    spyOn(timemgr, 'showStart');
+    spyOn(timemgr, 'showView');
     $(window).trigger('hashchange');
-    expect(timemgr.showStart).toHaveBeenCalledWith(window.location.hash);
+    expect(timemgr.showView).toHaveBeenCalledWith(window.location.hash);
   })
 
   // it('can show a problem view', function() {
