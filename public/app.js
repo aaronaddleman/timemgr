@@ -45,14 +45,6 @@ timemgr.dateAdd = function(hash) {
   var view = $('.templates .date-add').clone();
   view.find('.title').text('Pick your date and time');
   timemgr.applyObject(timemgr.dates, view);
-  $('.datepicker').pickadate({
-    selectMonths: true, // Creates a dropdown to control month
-    selectYears: false // Creates a dropdown of 15 years to control year
-  });        
-  $('.timepicker').pickatime({
-    clear: ''
-  });
-
   return view;
 }
 
