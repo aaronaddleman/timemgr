@@ -35,7 +35,13 @@ timemgr.showView = function(hash) {
 
     if ($('.timepicker')) {
       $('.timepicker').pickatime({
-        clear: ''
+        clear: '',
+        interval: 60,
+        min: ["7","00"],
+        max: ["16","0"],
+        disable: [
+          { from: [12,0], to: [2,0] }
+        ]
       });
     }
   }
