@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="google-signin-client_id" content="44845625242-linai77o2lrq9q4mad9scb6o7fuu08d3.apps.googleusercontent.com">
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
@@ -13,26 +14,38 @@
     <script type="text/javascript" src="js/materialize.js"></script>
     <script type="text/javascript" src="js/picker.js"></script>
     <script type="text/javascript" src="js/picker.time.js"></script>
+    <script src='https://apis.google.com/js/platform.js' async defer></script>
   </head>
 
   <body>
     <div class='markup'>
-      <div class="navbar-fixed">
+      <div class="navbar">
         <nav>
           <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">Logo</a>
+            <a href="#start" class="brand-logo">Logo</a>
             <ul class="right hide-on-med-and-down">
               <li><a href="#start">Start</a></li>
-              <li><a href="#dates">List Dates</a></li>
+              <li><a href="#auth">Auth</a></li>
+              <li class="badge"><a href="#dates"><span class="badge">0</span> Dates</a></li>
             </ul>
           </div>
         </nav>
       </div>
+
       <div class="container">
 
       </div>
     </div>
     <div class='templates hide'>
+      <div class='auth'>
+        <h3 class='title'></h3>
+        <div class="row">
+          <div class="col s12">
+            <span class='g-signin2' data-onsuccess='googleSignIn'></span>
+          </div>
+        </div>
+      </div>
+      <li class='badge'><a href="#dates"><span class="badge"></span>Dates</a></li>
       <div class='date-add'>
 
         <div id="date-picker" class="col s6">
@@ -68,7 +81,6 @@
       <div class='dates-list'>
         <h3 class='title'></h3>
         <p data-name='description'></p>
-        <a class="waves-effect waves-light btn" id="start" href="#start">Start</a>
         <a class="waves-effect waves-light btn" id="start" href="#date-add">Add date</a>
       </div>
       <div class='start'>
