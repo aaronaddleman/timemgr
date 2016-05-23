@@ -37,7 +37,7 @@ timemgr.showView = function(hash) {
       $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: false // Creates a dropdown of 15 years to control year
-      });        
+      });
     }
 
     if ($('.timepicker')) {
@@ -107,6 +107,107 @@ function googleSignIn(googleUser) {
   });
 }
 
+function fbCheckLoginState() {
+  FB.getLoginStatus(function(response) {
+    fbStatusChangeCallback(response);
+  });
+  console.log("checking fb login")
+}
+
+  // function refresh() {
+  //   return gapi.auth2.getAuthInstance().signIn({
+  //       prompt: 'login'
+  //     }).then(function(userUpdate) {
+  //     var creds = AWS.config.credentials;
+  //     var newToken = userUpdate.getAuthResponse().id_token;
+  //     creds.params.Logins['accounts.google.com'] = newToken;
+  //     return learnjs.awsRefresh();
+  //   });
+  // }
+  // learnjs.awsRefresh().then(function(id) {
+  //   learnjs.identity.resolve({
+  //     id: id,
+  //     email: googleUser.getBasicProfile().getEmail(),
+  //     refresh: refresh
+  //   });
+  // });
+
+
+// This is called with the results from from FB.getLoginStatus().
+function fbStatusChangeCallback(response) {
+  var fb_id_token = FB.getAccessToken();
+  console.log('statusChangeCallback');
+  console.log(response);
+  // The response object is returned with a status field that lets the
+  // app know the current login status of the person.
+  // Full docs on the response object can be found in the documentation
+  // for FB.getLoginStatus().
+  if (response.status === 'connected') {
+    // Logged into your app and Facebook.
+    testAPI();
+
+    AWS.config.update({
+      region: 'us-east-1',
+      credentials: new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: timemgr.poolId,
+        Logins: {
+          'graph.facebook.com': fb_id_token
+        }
+      })
+    })
+
+    // AWS.config.credentials.get(function() {
+    //   console.log("aws creds");
+    // })
+
+  } else if (response.status === 'not_authorized') {
+    // The person is logged into Facebook, but not your app.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into this app.';
+  } else {
+    // The person is not logged into Facebook, so we're not sure if
+    // they are logged into this app or not.
+    document.getElementById('status').innerHTML = 'Please log ' +
+      'into Facebook.';
+  }
+  function refresh() {
+    return gapi.auth2.getAuthInstance().signIn({
+        prompt: 'login'
+      }).then(function(userUpdate) {
+      var creds = AWS.config.credentials;
+      var newToken = userUpdate.getAuthResponse().accessToken;
+      creds.params.Logins['graph.facebook.com'] = newToken;
+      return learnjs.awsRefresh();
+      console.log("fb refresh: " + newToken);
+    });
+  }
+  learnjs.awsRefresh().then(function(id) {
+    learnjs.identity.resolve({
+      id: id,
+      email: function() {
+        FB.api('/me', { locale: 'en_US', fields: 'name, email' },
+          function(response) {
+            console.log(response.email);
+          }
+        );
+      },
+      refresh: refresh
+    });
+  });
+}
+
+// Here we run a very simple test of the Graph API after login is
+// successful.  See statusChangeCallback() for when this call is made.
+function testAPI() {
+  console.log('Welcome!  Fetching your information.... ');
+  FB.api('/me', function(response) {
+    console.log('Successful login for: ' + response.name);
+    document.getElementById('status').innerHTML =
+      'Thanks for logging in, ' + response.name + '!';
+  });
+}
+
+
 timemgr.auth = function () {
   var view = $('.templates .auth').clone();
   view.find('.title').text('Select authentication');
@@ -125,10 +226,10 @@ timemgr.triggerEvent = function(name, args) {
   $('container').trigger(name, args);
 }
 
-timemgr.dateAdd = function(hash) {  
+timemgr.dateAdd = function(hash) {
   var view = $('.templates .date-add').clone();
   view.find('.title').text('Pick your date and time');
-  
+
 
   function sendDateClick() {
     var $toastContent = $('<span>Date sent...</span>');
